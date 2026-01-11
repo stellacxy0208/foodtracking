@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>P-Care | Pancreatic Nutrition</title>
+
+  <!-- Tailwind + FontAwesome -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+
+  <style>
+    body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #F0F4F8; }
+    .card { background: white; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: transform 0.2s; }
+    .food-item { border-left: 5px solid; }
+    .safe { border-color: #48BB78; background: #F0FFF4; }
+    .caution { border-color: #ECC94B; background: #FFFFF0; }
+    .avoid { border-color: #F56565; background: #FFF5F5; }
+    .btn-ai { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+  </style>
+</head>
+
+<body class="pb-20">
+  <!-- Header -->
+  <header class="bg-white p-6 sticky top-0 z-50 shadow-sm">
+    <div class="flex justify-between items-center">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-800">P-Care</h1>
+        <p class="text-xs text-gray-500">Based on MSKCC & CSNO Guidelines</p>
+      </div>
+      <button id="btnOpenSettings" class="text-gray-400 hover:text-blue-500" aria-label="Open settings">
+        <i class="fas fa-cog text-xl" aria-hidden="true"></i>
+      </button>
+    </div>
+  </header>
+
+  <main class="p-5">
+    <!-- Daily Goals -->
+    <section class="card p-5 mb-5" aria-labelledby="daily-goals-title">
+      <h2 id="daily-goals-title" class="text-lg font-semibold mb-3">
+        Daily Goals
+        <span class="text-xs text-gray-400 font-normal">
+          (Target: <span id="targetWeightDisplay">--</span>kg)
+        </span>
+      </h2>
+
+      <!-- Calories -->
+      <div class="mb-4">
+        <div class="flex justify-between text-sm mb-1">
+          <span class="text-gray-600"><i class="fas fa-fire text-orange-400 mr-2" aria-hidden="true"></i>Calories</span>
+          <span class="font-bold"><span id="calCurrent">0</span> / <span id="calTarget">2000</span> kcal</span>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-2.5" role="progressbar" aria-label="Calories progress">
+          <div id="calBar" class="bg-orange-400 h-2.5 rounded-full" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <!-- Protein -->
+      <div>
+        <div class="flex justify-between text-sm mb-1">
+          <span class="text-gray-600"><i class="fas fa-drumstick-bite text-blue-500 mr-2" aria-hidden="true"></i>Protein</span>
+          <span class="font-bold"><span id="protCurrent">0</span> / <span id="protTarget">80</span> g</span>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-2.5" role="progressbar" aria-label="Protein progress">
+          <div id="protBar" class="bg-blue-500 h-2.5 rounded-full" style="width: 0%"></div>
+        </div>
+        <p class="text-xs text-blue-400 mt-2">*High protein is critical for recovery (1.2-2.0g/kg)</p>
+      </div>
+    </section>
+
+    <!-- Actions -->
+    <section class="flex gap-3 mb-6" aria-label="Actions">
+      <button id="btnAskAI" class="btn-ai flex-1 py-3 rounded-xl shadow-md font-semibold text-center flex items-center justify-center gap-2">
+        <i class="fas fa-robot" aria-hidden="true"></i> Ask AI Assistant
+      </button>
+      <button id="btnGoogleSearch" class="bg-white flex-1 py-3 rounded-xl shadow-md font-semibold text-gray-700 text-center border border-gray-100 flex items-center justify-center gap-2">
+        <i class="fab fa-google" aria-hidden="true"></i> Search Web
+      </button>
+    </section>
+
+    <!-- Food Safety Guide -->
+    <section aria-labelledby="food-guide-title">
+      <h3 id="food-guide-title" class="text-xl font-bold text-gray-800 mb-4">Food Safety Guide</h3>
+
+      <div class="relative mb-4">
+        <label for="foodSearch" class="sr-only">Search food</label>
+        <input
+          type="text"
+          id="foodSearch"
+          placeholder="Can I eat... (e.g., Banana, Steak)"
+          class="w-full p-4 rounded-xl border-none shadow-sm focus:ring-2 focus:ring-blue-200 outline-none"
+          autocomplete="off"
+          inputmode="search"
+        />
+        <i class="fas fa-search absolute right-4 top-4 text-gray-400" aria-hidden="true"></i>
+      </div>
+
+      <div id="foodList" class="space-y-3" aria-live="polite"></div>
+
+      <div id="notFound" class="hidden text-center p-8 text-gray-500">
+        <p class="mb-3">Item not found in clinical database.</p>
+        <button id="btnAskAIFromNotFound" class="text-blue-600 font-bold underline">Ask AI if it's safe to eat</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Settings Modal -->
+  <div id="settingsModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50" role="dialog" aria-modal="true" aria-label="Settings">
+    <div class="bg-white p-6 rounded-2xl w-11/12 max-w-sm">
+      <div class="flex items-start justify-between gap-3">
+        <h3 class="text-lg font-bold mb-4">Personalize Targets</h3>
+        <button id="btnCloseSettings" class="text-gray-400 hover:text-gray-700" aria-label="Close settings">
+          <i class="fas fa-xmark text-lg" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <p class="text-sm text-gray-500 mb-4">Guidelines suggest 25-30 kcal/kg and 1.2-2.0g protein/kg [Source: CSNO].</p>
+
+      <label class="block text-sm font-bold text-gray-700 mb-2" for="weightInput">Current Weight (kg)</label>
+      <input type="number" id="weightInput" class="w-full p-3 border rounded-lg mb-6" value="60" min="20" max="250" />
+
+      <button id="btnSaveSettings" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold">Save & Recalculate</button>
+    </div>
+  </div>
+
+  <script>
+    /**
+     * P-Care (rewritten)
+     * - No inline onclick
+     * - Safer rendering (avoid injecting user input into HTML)
+     * - Event delegation for "+ Eat"
+     * - Clear separation: data/state/ui/actions
+     */
+
+    // =========================
+    // 1) Data
+    // =========================
+    const foodDB = [
+      { name: "Chicken Breast (Boiled/Baked)", status: "safe", protein: 31, cal: 165, note: "Good source of lean protein. Avoid frying." },
+      { name: "White Rice / Toast", status: "safe", protein: 3, cal: 130, note: "Easy to digest. Low fiber is better initially." },
+      { name: "Eggs (Scrambled/Boiled)", status: "safe", protein: 6, cal: 70, note: "Excellent protein source. Avoid heavy oil." },
+      { name: "Tofu / Soft Bean Curd", status: "safe", protein: 8, cal: 76, note: "Plant-based protein, very gentle on digestion." },
+      { name: "Banana (Ripe)", status: "safe", protein: 1, cal: 105, note: "Soft fruit, rich in potassium." },
+      { name: "Fish (White fish, steamed)", status: "safe", protein: 20, cal: 90, note: "High quality protein, low fat." },
+      { name: "Yogurt (Low Fat)", status: "caution", protein: 10, cal: 59, note: "Caution if lactose intolerant. Choose lactose-free if needed." },
+      { name: "Broccoli / Cabbage", status: "caution", protein: 3, cal: 34, note: "Gas-producing. May cause bloating/discomfort." },
+      { name: "Onions (Raw)", status: "caution", protein: 1, cal: 40, note: "High risk of gas and bloating." },
+      { name: "Fried Chicken / Fries", status: "avoid", protein: 15, cal: 300, note: "High fat content is hard to digest for pancreas." },
+      { name: "Raw Salad / Vegetables", status: "avoid", protein: 2, cal: 20, note: "Hard to digest fiber. Cook vegetables well." },
+      { name: "Sugary Desserts / Cake", status: "avoid", protein: 2, cal: 250, note: "Risk of dumping syndrome and blood sugar spikes." },
+      { name: "Carbonated Drinks", status: "avoid", protein: 0, cal: 140, note: "Causes gas and fullness." },
+      { name: "Red Meat (Steak, Fatty Pork)", status: "avoid", protein: 25, cal: 250, note: "Hard to digest. Stick to lean poultry/fish." },
+      { name: "Nuts (Whole)", status: "caution", protein: 6, cal: 170, note: "Hard to digest. Smooth nut butter is safer." }
+    ];
+
+    // =========================
+    // 2) State / Config
+    // =========================
+    const STORAGE_KEY_WEIGHT = "pcare_weight";
+
+    const GUIDELINE = Object.freeze({
+      CAL_PER_KG: 30,
+      PROT_PER_KG: 1.5
+    });
+
+    const state = {
+      userWeight: 60,
+      dailyStats: { cal: 0, prot: 0 },
+      filteredList: [...foodDB]
+    };
+
+    // =========================
+    // 3) DOM helpers
+    // =========================
+    const $ = (sel) => document.querySelector(sel);
+
+    const els = {
+      targetWeightDisplay: $("#targetWeightDisplay"),
+      calCurrent: $("#calCurrent"),
+      calTarget: $("#calTarget"),
+      calBar: $("#calBar"),
+      protCurrent: $("#protCurrent"),
+      protTarget: $("#protTarget"),
+      protBar: $("#protBar"),
+
+      foodSearch: $("#foodSearch"),
+      foodList: $("#foodList"),
+      notFound: $("#notFound"),
+
+      settingsModal: $("#settingsModal"),
+      weightInput: $("#weightInput"),
+
+      btnOpenSettings: $("#btnOpenSettings"),
+      btnCloseSettings: $("#btnCloseSettings"),
+      btnSaveSettings: $("#btnSaveSettings"),
+
+      btnAskAI: $("#btnAskAI"),
+      btnAskAIFromNotFound: $("#btnAskAIFromNotFound"),
+      btnGoogleSearch: $("#btnGoogleSearch")
+    };
+
+    function clamp(n, min, max) {
+      return Math.max(min, Math.min(max, n));
+    }
+
+    function toPercent(current, target) {
+      if (!target || target <= 0) return 0;
+      return clamp((current / target) * 100, 0, 100);
+    }
+
+    // =========================
+    // 4) UI render
+    // =========================
+    function updateDashboard() {
+      const calTarget = Math.round(state.userWeight * GUIDELINE.CAL_PER_KG);
+      const protTarget = Math.round(state.userWeight * GUIDELINE.PROT_PER_KG);
+
+      els.targetWeightDisplay.textContent = String(state.userWeight);
+
+      els.calTarget.textContent = String(calTarget);
+      els.calCurrent.textContent = String(state.dailyStats.cal);
+      els.calBar.style.width = toPercent(state.dailyStats.cal, calTarget) + "%";
+
+      els.protTarget.textContent = String(protTarget);
+      els.protCurrent.textContent = String(state.dailyStats.prot);
+      els.protBar.style.width = toPercent(state.dailyStats.prot, protTarget) + "%";
+    }
+
+    function statusIconClass(status) {
+      if (status === "safe") return "check-circle text-green-600";
+      if (status === "caution") return "exclamation-circle text-yellow-600";
+      return "times-circle text-red-600";
+    }
+
+    function createFoodCard(item) {
+      const wrap = document.createElement("div");
+      wrap.className = `card food-item ${item.status} p-4 flex justify-between items-center`;
+
+      // left content
+      const left = document.createElement("div");
+      left.className = "flex-1";
+
+      const titleRow = document.createElement("div");
+      titleRow.className = "flex items-center gap-2";
+
+      const icon = document.createElement("i");
+      icon.className = `fas fa-${statusIconClass(item.status)} text-lg`;
+      icon.setAttribute("aria-hidden", "true");
+
+      const title = document.createElement("h4");
+      title.className = "font-bold text-gray-800";
+      title.textContent = item.name;
+
+      titleRow.appendChild(icon);
+      titleRow.appendChild(title);
+
+      const note = document.createElement("p");
+      note.className = "text-xs text-gray-600 mt-1";
+      note.textContent = item.note;
+
+      const meta = document.createElement("p");
+      meta.className = "text-xs text-gray-500 mt-1";
+      meta.textContent = `🔥 ${item.cal} kcal   🥩 ${item.protein}g prot`;
+
+      left.appendChild(titleRow);
+      left.appendChild(note);
+      left.appendChild(meta);
+
+      // right actions
+      const right = document.createElement("div");
+      right.className = "ml-3";
+
+      if (item.status !== "avoid") {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "text-sm bg-white border border-gray-200 px-3 py-1 rounded-lg shadow-sm active:bg-gray-100";
+        btn.textContent = "+ Eat";
+
+        // store payload in dataset for event delegation
+        btn.dataset.action = "eat";
+        btn.dataset.name = item.name;
+        btn.dataset.cal = String(item.cal);
+        btn.dataset.prot = String(item.protein);
+
+        right.appendChild(btn);
+      } else {
+        const badge = document.createElement("span");
+        badge.className = "text-xs font-bold text-red-500 uppercase";
+        badge.textContent = "Avoid";
+        right.appendChild(badge);
+      }
+
+      wrap.appendChild(left);
+      wrap.appendChild(right);
+      return wrap;
+    }
+
+    function renderFoods(list) {
+      els.foodList.innerHTML = "";
+      if (!list || list.length === 0) {
+        els.notFound.classList.remove("hidden");
+        return;
+      }
+      els.notFound.classList.add("hidden");
+
+      const frag = document.createDocumentFragment();
+      list.forEach(item => frag.appendChild(createFoodCard(item)));
+      els.foodList.appendChild(frag);
+    }
+
+    // =========================
+    // 5) App logic
+    // =========================
+    function addFood(name, cal, prot) {
+      state.dailyStats.cal += Number(cal) || 0;
+      state.dailyStats.prot += Number(prot) || 0;
+      updateDashboard();
+      alert(`Added ${name} to daily tracker!`);
+    }
+
+    function filterFoods(query) {
+      const q = (query || "").trim().toLowerCase();
+      state.filteredList = q
+        ? foodDB.filter(f => f.name.toLowerCase().includes(q))
+        : [...foodDB];
+      renderFoods(state.filteredList);
+    }
+
+    // =========================
+    // 6) External actions
+    // =========================
+    function buildAIHelperPrompt(foodText) {
+      const item = foodText && foodText.trim() ? foodText.trim() : "this item";
+      return `I am a pancreatic cancer patient. Is it safe for me to eat ${item}? Please provide nutritional advice based on MSKCC guidelines.`;
+    }
+
+    function askAI() {
+      const query = els.foodSearch.value;
+      const prompt = buildAIHelperPrompt(query);
+      if (confirm(`Open AI Assistant with prompt: "${prompt}"?`)) {
+        window.open(`https://chatgpt.com/?q=${encodeURIComponent(prompt)}`, "_blank");
+      }
+    }
+
+    function googleSearch() {
+      const query = els.foodSearch.value.trim();
+      const finalQuery = `Pancreatic cancer diet safety ${query || ""}`.trim();
+      window.open(`https://www.google.com/search?q=${encodeURIComponent(finalQuery)}`, "_blank");
+    }
+
+    // =========================
+    // 7) Settings modal
+    // =========================
+    function openSettings() {
+      els.settingsModal.classList.remove("hidden");
+      els.settingsModal.classList.add("flex");
+      els.weightInput.focus();
+    }
+
+    function closeSettings() {
+      els.settingsModal.classList.add("hidden");
+      els.settingsModal.classList.remove("flex");
+    }
+
+    function saveSettings() {
+      const val = Number(els.weightInput.value);
+      if (!Number.isFinite(val)) return;
+
+      state.userWeight = clamp(Math.round(val), 20, 250);
+      localStorage.setItem(STORAGE_KEY_WEIGHT, String(state.userWeight));
+      updateDashboard();
+      closeSettings();
+    }
+
+    // =========================
+    // 8) Init + Events
+    // =========================
+    function init() {
+      // load saved weight
+      const saved = localStorage.getItem(STORAGE_KEY_WEIGHT);
+      if (saved) {
+        const w = Number(saved);
+        if (Number.isFinite(w)) state.userWeight = clamp(Math.round(w), 20, 250);
+      }
+      els.weightInput.value = String(state.userWeight);
+
+      renderFoods(foodDB);
+      updateDashboard();
+
+      // search typing
+      els.foodSearch.addEventListener("input", (e) => filterFoods(e.target.value));
+
+      // event delegation for "+ Eat"
+      els.foodList.addEventListener("click", (e) => {
+        const btn = e.target.closest("button[data-action='eat']");
+        if (!btn) return;
+        addFood(btn.dataset.name, btn.dataset.cal, btn.dataset.prot);
+      });
+
+      // actions
+      els.btnAskAI.addEventListener("click", askAI);
+      els.btnAskAIFromNotFound.addEventListener("click", askAI);
+      els.btnGoogleSearch.addEventListener("click", googleSearch);
+
+      // settings modal
+      els.btnOpenSettings.addEventListener("click", openSettings);
+      els.btnCloseSettings.addEventListener("click", closeSettings);
+      els.btnSaveSettings.addEventListener("click", saveSettings);
+
+      // click outside modal content closes
+      els.settingsModal.addEventListener("click", (e) => {
+        if (e.target === els.settingsModal) closeSettings();
+      });
+
+      // ESC closes modal
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && !els.settingsModal.classList.contains("hidden")) closeSettings();
+      });
+    }
+
+    init();
+  </script>
+</body>
+</html>
