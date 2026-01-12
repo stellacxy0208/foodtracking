@@ -87,6 +87,44 @@
         <button class="text-slate-400 hover:text-slate-700" onclick="PCare.hideBanner()"><i class="fa-solid fa-xmark"></i></button>
       </div>
     </div>
+            <!-- Manual Add (NEW, minimal patch — does not change v3 layout) -->
+        <div class="card p-5 mt-5" id="manualAddCard">
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="text-lg font-semibold text-gray-800">✍️ Manual Add</h3>
+                <p class="text-xs text-gray-500">Add foods not in the database</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Food name</label>
+                    <input type="text" id="manualName" class="w-full p-3 border rounded-lg" placeholder="e.g., 云吞面 / wonton noodles">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">kcal</label>
+                        <input type="number" id="manualCal" class="w-full p-3 border rounded-lg" placeholder="e.g., 300">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">protein (g)</label>
+                        <input type="number" id="manualProt" class="w-full p-3 border rounded-lg" placeholder="e.g., 15">
+                    </div>
+                </div>
+
+                <div class="md:col-span-2 flex gap-3">
+                    <button id="manualAddBtn" class="btn-ai flex-1 py-3 rounded-xl shadow-md font-semibold text-center flex items-center justify-center gap-2">
+                        ➕ Add
+                    </button>
+                    <button id="manualClearBtn" class="bg-white flex-1 py-3 rounded-xl shadow-md font-semibold text-gray-700 text-center border border-gray-100 flex items-center justify-center gap-2">
+                        🧹 Clear
+                    </button>
+                </div>
+
+                <p class="md:col-span-2 text-xs text-gray-500">
+                    Tip: If you don’t know kcal/protein, leave blank (0) — you can still log it.
+                </p>
+            </div>
+        </div>
 
     <!-- Router views -->
     <section id="view-home" class="space-y-5"></section>
@@ -175,41 +213,3 @@
 </body>
 </html>
 
-        <!-- Manual Add (NEW, minimal patch — does not change v3 layout) -->
-        <div class="card p-5 mt-5" id="manualAddCard">
-            <div class="flex justify-between items-center mb-3">
-                <h3 class="text-lg font-semibold text-gray-800">✍️ Manual Add</h3>
-                <p class="text-xs text-gray-500">Add foods not in the database</p>
-            </div>
-
-            <div class="grid md:grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-2">Food name</label>
-                    <input type="text" id="manualName" class="w-full p-3 border rounded-lg" placeholder="e.g., 云吞面 / wonton noodles">
-                </div>
-
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-2">kcal</label>
-                        <input type="number" id="manualCal" class="w-full p-3 border rounded-lg" placeholder="e.g., 300">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-2">protein (g)</label>
-                        <input type="number" id="manualProt" class="w-full p-3 border rounded-lg" placeholder="e.g., 15">
-                    </div>
-                </div>
-
-                <div class="md:col-span-2 flex gap-3">
-                    <button id="manualAddBtn" class="btn-ai flex-1 py-3 rounded-xl shadow-md font-semibold text-center flex items-center justify-center gap-2">
-                        ➕ Add
-                    </button>
-                    <button id="manualClearBtn" class="bg-white flex-1 py-3 rounded-xl shadow-md font-semibold text-gray-700 text-center border border-gray-100 flex items-center justify-center gap-2">
-                        🧹 Clear
-                    </button>
-                </div>
-
-                <p class="md:col-span-2 text-xs text-gray-500">
-                    Tip: If you don’t know kcal/protein, leave blank (0) — you can still log it.
-                </p>
-            </div>
-        </div>
