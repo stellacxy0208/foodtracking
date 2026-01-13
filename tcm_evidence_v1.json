@@ -942,10 +942,10 @@
       ]
     },
     {"id": "formula_huaier_granule",
-      "type": "formula_overview"
+      "type": "formula_overview",
       "title": {
         "en": "Huaier Granule",
-        "zh": "槐耳颗粒（Huaier Granule）"
+        "zh": "槐耳颗粒（Huaier Granule)"
       },
       "summary": {
         "en": "Referenced in clinical studies in hepatobiliary-related cancers as an adjunct/supportive therapy. Evidence specific to pancreatic cancer is limited or indirect; interpret cautiously and monitor product quality and organ function.",
