@@ -65,9 +65,7 @@ const PCare = (() => {
       btnTCM: "Integrative cautions",
       btnPhase: "Why this phase?",
       bannerTitle: "Safety note",
-      bannerText: "This app is for education & tracking. It can’t diagnose or replace professional care. ✅ 少量多餐 • ✅ 低脂更友好 • ✅ 每口慢一点<br/>
-            🥩 蛋白是优先项（恢复/肌肉/免疫）<br/>
-            ⚠️ 若持续腹泻/体重下降/黄疸，请尽快就医评估。</p>"
+      bannerText: "This app is for education & tracking. It can’t diagnose or replace professional care. ✅ 少量多餐 • ✅ 低脂更友好 • ✅ 每口慢一点<br/>"
     },
     zh: {
       subtitle: "胰腺营养 + 证据库（中西结合）",
@@ -104,9 +102,7 @@ const PCare = (() => {
       btnTCM: "中西医注意事项",
       btnPhase: "为什么是这个阶段？",
       bannerTitle: "安全提示",
-      bannerText: "本工具用于健康教育与记录，不可替代医生/营养师的诊疗。✅ 少量多餐 • ✅ 低脂更友好 • ✅ 每口慢一点<br/>
-            🥩 蛋白是优先项（恢复/肌肉/免疫）<br/>
-            ⚠️ 若持续腹泻/体重下降/黄疸，请尽快就医评估。</p>"
+      bannerText: "本工具用于健康教育与记录，不可替代医生/营养师的诊疗。✅ 少量多餐 • ✅ 低脂更友好 • ✅ 每口慢一点<br/>"
     }
   };
 
