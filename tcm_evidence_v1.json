@@ -941,28 +941,194 @@
         }
       ]
     },
-    {"id": "formula_huaier_granule",
-      "type": "formula_overview",
-      "title": {
-        "en": "Huaier Granule",
-        "zh": "槐耳颗粒（Huaier Granule)"
-      },
-      "summary": {
-        "en": "Referenced in clinical studies in hepatobiliary-related cancers as an adjunct/supportive therapy. Evidence specific to pancreatic cancer is limited or indirect; interpret cautiously and monitor product quality and organ function.",
-        "zh": "综述提及其在肝胆胰相关肿瘤临床研究中的应用，常作为辅助/支持治疗探索。对胰腺癌的证据多来自小样本或间接证据，需谨慎解读；若使用应关注产品来源与肝肾监测。",
-      },
-      "evidence_level": "low",
-      "source_refs": "https://doi.org/10.1186/s12943-024-02136-2",
-      "key_points": [
-        {
-          "en": "Evidence varies; prioritize safety and communication.",
-          "zh": "证据不一；以安全与沟通为先。"
-        }
-      ],
-      "safety": [
-        {
-          "en": "May worsen reflux in some.",
-          "zh": "与化疗合用需监测肝功能与过敏反应""
-        },
-      ]
+    {
+  "id": "formula_huachansu",
+  "type": "formula_overview",
+  "title": {
+    "zh": "华蟾素（Huachansu）",
+    "en": "Huachansu"
+  },
+  "summary": {
+    "zh": "综述中作为临床研究中出现的中医药制剂之一。临床证据与适应证需以具体试验为准；潜在心律/电解质相关风险需评估，建议仅在医疗监管下使用。",
+    "en": "Listed among TCM therapeutics appearing in clinical trials. Indications and benefit/risk should follow specific trials; potential cardiac/electrolyte risks warrant medical supervision."
+  },
+  "evidence_level": "low",
+  "source_refs": [
+    {
+      "title": "Traditional Chinese medicine for the treatment of cancers of hepatobiliary system: from clinical evidence to drug discovery",
+      "journal": "Molecular Cancer",
+      "year": 2024,
+      "doi": "10.1186/s12943-024-02136-2",
+      "url": "https://doi.org/10.1186/s12943-024-02136-2",
+      "source_file": "s12943-024-02136-2.pdf"
+    }
+  ],
+  "key_points": [
+    {
+      "zh": "临床证据需逐条核对具体试验设计与适应证。",
+      "en": "Clinical benefit/risk depends on individual trial design and indications."
+    }
+  ],
+  "safety": [
+    {
+      "zh": "潜在心脏相关不良反应风险；禁用于来源不明制剂；需医疗监管。",
+      "en": "Potential cardiac adverse-event risk; avoid unknown products; medical supervision required."
     },
+    {
+      "zh": "与影响心律或电解质的药物合用需谨慎。",
+      "en": "Use caution with drugs affecting rhythm or electrolytes."
+    }
+  ]
+},
+{
+  "id": "compound_icaritin",
+  "type": "compound_profile",
+  "title": {
+    "zh": "依卡替尼（Icaritin，天然产物衍生物）",
+    "en": "Icaritin (natural product-derived compound)"
+  },
+  "summary": {
+    "zh": "综述提及其在肝胆胰系统肿瘤的临床研究与药物发现价值。对胰腺癌的临床证据需以具体试验为准；作为药物/成分应关注药代与肝功能监测。",
+    "en": "Review highlights clinical evidence and drug-discovery potential in hepatobiliary system cancers. Pancreatic-cancer-specific clinical evidence depends on individual trials; monitor pharmacokinetics and liver function."
+  },
+  "evidence_level": "low",
+  "source_refs": [
+    {
+      "title": "Traditional Chinese medicine for the treatment of cancers of hepatobiliary system: from clinical evidence to drug discovery",
+      "journal": "Molecular Cancer",
+      "year": 2024,
+      "doi": "10.1186/s12943-024-02136-2",
+      "url": "https://doi.org/10.1186/s12943-024-02136-2",
+      "source_file": "s12943-024-02136-2.pdf"
+    }
+  ],
+  "key_points": [
+    {
+      "zh": "属于药物/成分级干预：证据需对应具体试验，不能用综述一句话推断疗效。",
+      "en": "Drug-level intervention: interpret only in the context of specific trials."
+    }
+  ],
+  "safety": [
+    {
+      "zh": "作为药物级干预需遵循试验/处方规范；关注肝功能与不良反应监测。",
+      "en": "Follow trial/prescription protocol; monitor liver function and adverse events."
+    },
+    {
+      "zh": "可能与肝酶代谢相关药物相互作用，需药师/肿瘤团队核对。",
+      "en": "Potential CYP-related interactions; cross-check with oncology/pharmacy."
+    }
+  ]
+},
+{
+  "id": "herb_ginseng",
+  "type": "herb_profile",
+  "title": {
+    "zh": "人参（Panax ginseng）",
+    "en": "Ginseng (Panax ginseng)"
+  },
+  "summary": {
+    "zh": "作为补充/草本使用较常见，研究多聚焦疲劳、食欲与生活质量等支持性结局；证据质量不一。化疗/免疫治疗期间使用需评估相互作用与血糖、血压影响。",
+    "en": "Commonly used supplement; studies focus on supportive outcomes (fatigue, appetite, QoL) with variable quality. During chemo/immunotherapy, assess interactions and effects on glucose/blood pressure."
+  },
+  "evidence_level": "low",
+  "source_refs": [
+    {
+      "title": "Unconventional Treatments for Pancreatic Cancer: A Systematic Review",
+      "journal": "Cancers",
+      "year": 2025,
+      "doi": "10.3390/cancers17091437",
+      "url": "https://doi.org/10.3390/cancers17091437",
+      "source_file": "cancers-17-01437.pdf"
+    }
+  ],
+  "key_points": [
+    {
+      "zh": "更偏“支持性结局”（乏力/食欲/QoL），不应替代标准肿瘤治疗。",
+      "en": "Primarily discussed for supportive outcomes; not a replacement for standard oncology care."
+    }
+  ],
+  "safety": [
+    {
+      "zh": "可能影响血糖/血压；来源与剂量不确定风险。",
+      "en": "May affect glucose/blood pressure; risk from uncertain source/dosing."
+    },
+    {
+      "zh": "可能影响免疫调节或 CYP 代谢通路；请与肿瘤团队共享补充剂清单。",
+      "en": "Possible immune/CYP pathway effects; share full supplement list with oncology team."
+    }
+  ]
+},
+{
+  "id": "compound_curcumin",
+  "type": "compound_profile",
+  "title": {
+    "zh": "姜黄素（Curcumin）",
+    "en": "Curcumin"
+  },
+  "summary": {
+    "zh": "多为机制与前临床研究；胰腺癌临床证据有限。作为补充剂高剂量可能增加出血风险或加重胃肠道不适；化疗期不建议自行大剂量使用。",
+    "en": "Mostly mechanistic and preclinical evidence; limited clinical data in pancreatic cancer. High-dose supplementation may increase bleeding risk or GI upset; avoid self-prescribed high doses during chemo."
+  },
+  "evidence_level": "very low",
+  "source_refs": [
+    {
+      "title": "Unconventional Treatments for Pancreatic Cancer: A Systematic Review",
+      "journal": "Cancers",
+      "year": 2025,
+      "doi": "10.3390/cancers17091437",
+      "url": "https://doi.org/10.3390/cancers17091437",
+      "source_file": "cancers-17-01437.pdf"
+    }
+  ],
+  "key_points": [
+    {
+      "zh": "证据多为前临床；临床获益不确定。",
+      "en": "Evidence largely preclinical; clinical benefit remains uncertain."
+    }
+  ],
+  "safety": [
+    {
+      "zh": "出血风险、胃刺激；与抗凝/抗血小板药物合用需谨慎。",
+      "en": "Bleeding risk and GI irritation; caution with anticoagulants/antiplatelets."
+    },
+    {
+      "zh": "化疗期避免自行大剂量补充。",
+      "en": "Avoid self-prescribed high doses during chemotherapy."
+    }
+  ]
+},
+{
+  "id": "therapy_phage_peptide_targeting",
+  "type": "therapy_profile",
+  "title": {
+    "zh": "噬菌体展示肽靶向策略（研究进展，非TCM）",
+    "en": "Phage-display peptide targeting (research, non-TCM)"
+  },
+  "summary": {
+    "zh": "综述介绍噬菌体展示技术筛选高亲和力肽用于胰腺癌早期检测、靶向递送与治疗的研究进展。属于实验与转化研究方向，不属于中医药治疗；可作为“替代/创新策略”证据条目补充展示。",
+    "en": "Review describes phage display to identify high-affinity peptides for early detection, targeted delivery and treatment in pancreatic cancer. This is translational research (non-TCM) and included as an innovation/alternative strategy reference."
+  },
+  "evidence_level": "low",
+  "source_refs": [
+    {
+      "title": "Phage-based peptides for pancreatic cancer diagnosis and treatment: alternative approach",
+      "journal": "Frontiers in Microbiology",
+      "year": 2023,
+      "doi": "10.3389/fmicb.2023.1231503",
+      "url": "https://doi.org/10.3389/fmicb.2023.1231503",
+      "source_file": "fmicb-14-1231503.pdf"
+    }
+  ],
+  "key_points": [
+    {
+      "zh": "研究/转化方向，临床可及性有限，需以临床试验为准。",
+      "en": "Translational research; limited clinical availability—follow clinical trials."
+    }
+  ],
+  "safety": [
+    {
+      "zh": "与临床治疗方案需由肿瘤团队评估。",
+      "en": "Any integration into care should be assessed by the oncology team."
+    }
+  ]
+}
