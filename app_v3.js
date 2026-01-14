@@ -252,16 +252,29 @@ const PCare = (() => {
     window.open(`https://www.google.com/search?q=${encodeURIComponent(prefix + (q||""))}`, "_blank");
   }
 
-  function openModal(title, html){
-    $("modalTitle").textContent = title;
-    $("modalBody").innerHTML = html;
-    $("modal").classList.remove("hidden");
-    $("modal").classList.add("flex");
+function openModal(title, html){
+  const modal = document.getElementById("evModal");
+  const titleEl = document.getElementById("evModalTitle");
+  const bodyEl = document.getElementById("evModalBody");
+
+  if(!modal || !titleEl || !bodyEl){
+    console.error("Evidence modal elements not found");
+    return;
   }
-  function closeModal(){
-    $("modal").classList.add("hidden");
-    $("modal").classList.remove("flex");
-  }
+
+  titleEl.textContent = title;
+  bodyEl.innerHTML = html;
+
+  modal.classList.remove("hidden");
+  modal.classList.add("flex");
+}
+
+ function closeModal(){
+  const modal = document.getElementById("evModal");
+  if(!modal) return;
+  modal.classList.add("hidden");
+  modal.classList.remove("flex");
+}
 
   function phaseCopy(phase){
     const zh = {
@@ -868,54 +881,59 @@ const PCare = (() => {
     return await res.json();
   }
 
-  async function init(){
-    // lang toggle
-    document.getElementById("langBtn").addEventListener("click", () => {
-      setLang(state.lang === "en" ? "zh" : "en");
-    });
+async function init(){
+  // lang toggle
+  document.getElementById("langBtn").addEventListener("click", () => {
+    setLang(state.lang === "en" ? "zh" : "en");
+  });
 
-    // keyboard quick focus
-    window.addEventListener("keydown", (e) => {
-      if(e.key === "/"){
-        e.preventDefault();
-        const input = document.getElementById("foodSearch");
-        if(input){ input.focus(); }
-      }
-    });
-
-    // Load settings
-    loadSettings();
-
-    // Load data
-    try{
-      [state.foodDB, state.tcmDB, state.aus] = await Promise.all([
-        loadJSON("./fooddb_v3.json"),
-        loadJSON("./tcm_evidence_v1.json").catch(()=>loadJSON("./tcm_evidence_v1.json")),
-        loadJSON("./aus_guidelines_v1.json")
-      ]);
-      state.tcmDB = normalizeTCM(state.tcmDB);
-
-    }catch(e){
-      console.error(e);
-      showBanner();
-      $("bannerTitle").textContent = state.lang==="zh" ? "数据加载失败" : "Data load failed";
-      $("bannerText").textContent = (state.lang==="zh"
-        ? "请确认 JSON 文件与 app_v3.js 在同一目录，并使用本地服务器方式打开（例如 VSCode Live Server）。"
-        : "Ensure JSON files are in the same folder and open via a local server (e.g., VSCode Live Server)."
-      );
+  // keyboard quick focus
+  window.addEventListener("keydown", (e) => {
+    if(e.key === "/"){
+      e.preventDefault();
+      const input = document.getElementById("foodSearch");
+      if(input){ input.focus(); }
     }
+  });
 
-    // default safety banner once
-    showSafety();
-
-    // initial language based on browser
-    const prefersZh = (navigator.language || "").toLowerCase().startsWith("zh");
-    setLang(prefersZh ? "zh" : "en");
-
-    // route
-    window.addEventListener("hashchange", onRoute);
-    onRoute();
+ // ✅ Bind modal close button (safe to do early too)
+  const evClose = document.getElementById("evClose");
+  if(evClose){
+    evClose.onclick = closeModal;
   }
+
+  // Load settings
+  loadSettings();
+
+  // Load data
+  try{
+    [state.foodDB, state.tcmDB, state.aus] = await Promise.all([
+      loadJSON("./fooddb_v3.json"),
+      loadJSON("./tcm_evidence_v1.json").catch(()=>loadJSON("./tcm_evidence_v1.json")),
+      loadJSON("./aus_guidelines_v1.json")
+    ]);
+    state.tcmDB = normalizeTCM(state.tcmDB);
+  }catch(e){
+    console.error(e);
+    showBanner();
+    $("bannerTitle").textContent = state.lang==="zh" ? "数据加载失败" : "Data load failed";
+    $("bannerText").textContent = (state.lang==="zh"
+      ? "请确认 JSON 文件与 app_v3.js 在同一目录，并使用本地服务器方式打开（例如 VSCode Live Server）。"
+      : "Ensure JSON files are in the same folder and open via a local server (e.g., VSCode Live Server)."
+    );
+  }
+
+  // default safety banner once
+  showSafety();
+
+  // initial language based on browser
+  const prefersZh = (navigator.language || "").toLowerCase().startsWith("zh");
+  setLang(prefersZh ? "zh" : "en");
+
+  // route
+  window.addEventListener("hashchange", onRoute);
+  onRoute();
+}
 
   
   // ===== TCM schema normalizer (supports v1/v2/v7) =====
